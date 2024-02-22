@@ -143,7 +143,7 @@ class PageParser:
 
     def get_page(self) -> Page:
         # Select only elements that have the data-ft attribute
-        return self._get_page('article.async_like', 'article')
+        return self._get_page('article[data-ft*="top_level_post_id"]', 'article')
 
     def get_raw_page(self) -> RawPage:
         return self.html
@@ -286,10 +286,10 @@ class SearchPageParser(PageParser):
 
 
 class HashtagPageParser(PageParser):
-    cursor_regex = re.compile(r'(\/hashtag\/[a-z]+\/\?cursor=[^"]+).*$')
+    cursor_regex = re.compile(r'(\/hashtag\/[a-z]+\/\?locale=[a-z_A-Z]+&amp;cursor=[^"]+).*$')
 
     def get_page(self) -> Page:
-        return super()._get_page('article.async_like', 'article')
+        return super()._get_page('article', 'article')
 
     def get_next_page(self) -> Optional[URL]:
         assert self.cursor_blob is not None
